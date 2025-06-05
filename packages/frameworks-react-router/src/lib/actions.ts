@@ -6,7 +6,7 @@ import {
   type AuthConfig,
 } from "@auth/core"
 import type { ProviderType } from "@auth/core/providers"
-import { createCookie, redirect } from "react-router"
+import { createCookie, redirectDocument } from "react-router"
 import type { ReactRouterAuthResult } from "../index.js"
 
 type SignInParams = Parameters<ReactRouterAuthResult["signIn"]>
@@ -37,7 +37,7 @@ export async function signIn(
 
   if (!provider) {
     signInURL.searchParams.append("callbackUrl", callbackUrl)
-    if (shouldRedirect) redirect(signInURL.toString())
+    if (shouldRedirect) return redirectDocument(signInURL.toString())
     return signInURL.toString()
   }
 
@@ -61,7 +61,7 @@ export async function signIn(
 
   if (!foundProvider.id) {
     const url = `${signInURL}?${new URLSearchParams({ callbackUrl })}`
-    if (shouldRedirect) redirect(url)
+    if (shouldRedirect) redirectDocument(url)
     return url
   }
 
@@ -100,7 +100,7 @@ export async function signIn(
   const redirectUrl = responseUrl ?? url
 
   if (shouldRedirect) {
-    return redirect(redirectUrl, {
+    return redirectDocument(redirectUrl, {
       headers: redirectHeaders,
     })
   }
@@ -136,7 +136,6 @@ export async function signOut(
   })
 
   const redirectHeaders = new Headers()
-  console.log(signOutResponse.headers)
   for (const { name, value, options } of signOutResponse?.cookies ?? []) {
     const sessionCookie = createCookie(name)
     const serializedSessionCookie = await sessionCookie.serialize(
@@ -147,7 +146,7 @@ export async function signOut(
   }
 
   if (options?.shouldRedirect ?? true) {
-    return redirect(signOutResponse.redirect!, {
+    return redirectDocument(signOutResponse.redirect!, {
       headers: redirectHeaders,
     })
   }
