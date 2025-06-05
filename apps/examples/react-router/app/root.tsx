@@ -9,6 +9,9 @@ import {
 
 import type { Route } from "./+types/root"
 import "./app.css"
+import Footer from "~/components/footer"
+import { auth } from "./lib/auth.server"
+import Header from "./components/header"
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -23,6 +26,11 @@ export const links: Route.LinksFunction = () => [
   },
 ]
 
+export async function loader({ request }: Route.LoaderArgs) {
+  const session = await auth(request)
+  return { session }
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -33,7 +41,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <div className="flex h-full min-h-screen w-full flex-col justify-between">
+          <Header />
+          <main className="mx-auto w-full max-w-3xl flex-auto px-4 py-4 sm:px-6 md:py-6">
+            {children}
+          </main>
+          <Footer />
+        </div>
         <ScrollRestoration />
         <Scripts />
       </body>

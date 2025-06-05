@@ -11,8 +11,6 @@ const storage = createStorage({
 const config: ReactRouterAuthConfig = {
   providers: [Keycloak],
   adapter: UnstorageAdapter(storage),
-  trustHost: true,
-  secret: ["1"],
 }
 
 export const { auth, handlers, signIn, signOut } = ReactRouterAuth(config)
