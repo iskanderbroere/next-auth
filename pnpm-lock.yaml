@@ -11762,6 +11762,9 @@ packages:
   set-cookie-parser@2.7.0:
     resolution: {integrity: sha512-lXLOiqpkUumhRdFF3k1osNXCy9akgx/dyPZ5p8qAg9seJzXr5ZrlqZuWIMuY6ejOsVLE6flJ5/h3lsn57fQ/PQ==}
 
+  set-cookie-parser@2.7.1:
+    resolution: {integrity: sha512-IOc8uWeOZgnb3ptbCURJWNjWUPcO3ZnTTdzsurqERrP6nPyv+paC55vJM0LpOlT2ne+Ix+9+CRG1MNLlyZ4GjQ==}
+
   set-function-length@1.2.2:
     resolution: {integrity: sha512-pgRc4hJ4/sNjWCSS9AmnS40x3bNMDTknHgL5UaMBTMyJnU90EgWh1Rz+MC9eFu4BuN/UwZjKQuY/1v3rM7HMfg==}
     engines: {node: '>= 0.4'}
@@ -17231,7 +17234,7 @@ snapshots:
       busboy: 1.6.0
       dotenv: 10.0.0
       kleur: 4.1.5
-      set-cookie-parser: 2.7.0
+      set-cookie-parser: 2.7.1
       undici: 5.28.2
       urlpattern-polyfill: 4.0.3
 
@@ -27040,7 +27043,7 @@ snapshots:
     dependencies:
       cookie: 1.0.2
       react: 19.0.0-rc-4c58fce7-20240904
-      set-cookie-parser: 2.7.0
+      set-cookie-parser: 2.7.1
     optionalDependencies:
       react-dom: 18.3.1(react@19.0.0-rc-4c58fce7-20240904)
 
@@ -27683,6 +27686,8 @@ snapshots:
 
   set-cookie-parser@2.7.0: {}
 
+  set-cookie-parser@2.7.1: {}
+
   set-function-length@1.2.2:
     dependencies:
       define-data-property: 1.1.4
@@ -27913,7 +27918,7 @@ snapshots:
       rollup-plugin-visualizer: 5.12.0(rollup@3.29.4)
       rollup-route-manifest: 1.0.0(rollup@3.29.4)
       sade: 1.8.1
-      set-cookie-parser: 2.7.0
+      set-cookie-parser: 2.7.1
       sirv: 2.0.4
       solid-js: 1.8.12
       terser: 5.27.0

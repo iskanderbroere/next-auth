@@ -60,5 +60,5 @@ async function getSession(request: Request, config: ReactRouterAuthConfig) {
         return { user, ...session } satisfies Session
       },
     },
-  }) as Promise<Response>
+  })
 }
