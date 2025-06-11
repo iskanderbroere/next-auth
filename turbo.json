@@ -14,7 +14,8 @@
         "*.d.ts.map",
         "src/lib/pages/styles.ts",
         "src/providers/provider-types.ts",
-        ".svelte-kit/**"
+        ".svelte-kit/**",
+        ".react-router"
       ],
       "outputLogs": "new-only"
     },
@@ -67,7 +68,8 @@
         "@auth/sveltekit#build",
         "@auth/express#build",
         "@auth/solid-start#build",
-        "@auth/qwik#build"
+        "@auth/qwik#build",
+        "@auth/react-router#build"
       ],
       "persistent": true,
       "cache": false,
@@ -119,6 +121,7 @@
         "@auth/upstash-redis-adapter#build",
         "@auth/xata-adapter#build",
         "@auth/qwik#build",
+        "@auth/react-router#build",
         "next-auth#build",
         "^build"
       ],
