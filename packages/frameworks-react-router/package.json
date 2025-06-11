@@ -28,8 +28,10 @@
   },
   "scripts": {
     "build": "pnpm clean && pnpm providers && tsc",
-    "clean": "rm -rf lib index.* src/lib/providers",
-    "test": "vitest run",
+    "clean": "rm -rf *.js *.d.ts* lib providers",
+    "dev": "pnpm providers && tsc -w",
+    "test": "vitest run -c ../utils/vitest.config.ts",
+    "test:watch": "vitest -c ../utils/vitest.config.ts",
     "providers": "node ../utils/scripts/providers"
   },
   "publishConfig": {
@@ -37,6 +39,12 @@
   },
   "dependencies": {
     "@auth/core": "workspace:*"
+  },
+  "devDependencies": {
+    "react-router": "^7.6.0"
+  },
+  "peerDependencies": {
+    "react-router": "^7.6.0"
   },
   "keywords": [
     "react-router",
@@ -51,11 +59,5 @@
   "author": "",
   "contributors": [],
   "repository": "https://github.com/nextauthjs/next-auth",
-  "license": "ISC",
-  "devDependencies": {
-    "react-router": "^7.6.0"
-  },
-  "peerDependencies": {
-    "react-router": "^7.6.0"
-  }
+  "license": "ISC"
 }

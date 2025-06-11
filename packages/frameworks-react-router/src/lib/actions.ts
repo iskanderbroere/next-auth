@@ -1,12 +1,11 @@
 import {
   Auth,
   createActionURL,
-  raw,
   skipCSRFCheck,
   type AuthConfig,
 } from "@auth/core"
 import type { ProviderType } from "@auth/core/providers"
-import { createCookie, redirectDocument } from "react-router"
+import { redirectDocument } from "react-router"
 import type { ReactRouterAuthResult } from "../index.js"
 
 type SignInParams = Parameters<ReactRouterAuthResult["signIn"]>
@@ -18,18 +17,14 @@ export async function signIn(
   config: AuthConfig
 ) {
   const headers = new Headers(request.headers)
-  const { shouldRedirect = true, redirectTo, ...rest } = options
-
-  const hasFormDataInOptions = Object.keys(rest).length > 0
-  const formData = hasFormDataInOptions
-    ? rest
-    : Object.fromEntries(await request.formData())
+  const { redirectTo } = options
 
   const callbackUrl = redirectTo?.toString() ?? headers.get("Referer") ?? "/"
+
   const requestUrl = new URL(request.url)
   const signInURL = createActionURL(
     "signin",
-    request.headers.get("X-Forwarded-Proto") ?? requestUrl.protocol,
+    requestUrl.protocol,
     headers,
     process.env,
     config
@@ -37,8 +32,7 @@ export async function signIn(
 
   if (!provider) {
     signInURL.searchParams.append("callbackUrl", callbackUrl)
-    if (shouldRedirect) return redirectDocument(signInURL.toString())
-    return signInURL.toString()
+    return redirectDocument(signInURL.toString())
   }
 
   let url = `${signInURL}/${provider}?${new URLSearchParams(
@@ -60,51 +54,27 @@ export async function signIn(
   }
 
   if (!foundProvider.id) {
-    const url = `${signInURL}?${new URLSearchParams({ callbackUrl })}`
-    if (shouldRedirect) redirectDocument(url)
-    return url
+    signInURL.searchParams.append("callbackUrl", callbackUrl)
+    return redirectDocument(signInURL.toString())
   }
 
   if (foundProvider.type === "credentials") {
     url = url.replace("signin", "callback")
   }
 
+  const formData = Object.fromEntries(await request.formData())
+  headers.set("Content-Type", "application/x-www-form-urlencoded")
+
   const body = new URLSearchParams({
     ...formData,
     callbackUrl,
   })
   const signInRequest = new Request(url, { method: "POST", headers, body })
-  const signInResponse = await Auth(signInRequest, {
+
+  return Auth(signInRequest, {
     ...config,
-    raw,
     skipCSRFCheck,
   })
-
-  const redirectHeaders = new Headers()
-  for (const { name, value, options } of signInResponse?.cookies ?? []) {
-    const sessionCookie = createCookie(name)
-    const serializedSessionCookie = await sessionCookie.serialize(
-      value,
-      options
-    )
-    redirectHeaders.append("Set-Cookie", serializedSessionCookie)
-  }
-
-  const responseUrl =
-    signInResponse instanceof Response
-      ? signInResponse.headers.get("Location")
-      : signInResponse.redirect
-
-  // NOTE: if for some unexpected reason the responseUrl is not set,
-  // we redirect to the original url
-  const redirectUrl = responseUrl ?? url
-
-  if (shouldRedirect) {
-    return redirectDocument(redirectUrl, {
-      headers: redirectHeaders,
-    })
-  }
-  return redirectUrl as any
 }
 
 type SignOutParams = Parameters<ReactRouterAuthResult["signOut"]>
@@ -119,7 +89,7 @@ export async function signOut(
   const requestUrl = new URL(request.url)
   const url = createActionURL(
     "signout",
-    request.headers.get("X-Forwarded-Proto") ?? requestUrl.protocol,
+    requestUrl.protocol,
     headers,
     process.env,
     config
@@ -128,28 +98,8 @@ export async function signOut(
   const body = new URLSearchParams({ callbackUrl })
   const signOutRequest = new Request(url, { method: "POST", headers, body })
 
-  const signOutResponse = await Auth(signOutRequest, {
+  return Auth(signOutRequest, {
     ...config,
-    // todo: remove rawwwww
-    raw,
     skipCSRFCheck,
   })
-
-  const redirectHeaders = new Headers()
-  for (const { name, value, options } of signOutResponse?.cookies ?? []) {
-    const sessionCookie = createCookie(name)
-    const serializedSessionCookie = await sessionCookie.serialize(
-      value,
-      options
-    )
-    redirectHeaders.append("Set-Cookie", serializedSessionCookie)
-  }
-
-  if (options?.shouldRedirect ?? true) {
-    return redirectDocument(signOutResponse.redirect!, {
-      headers: redirectHeaders,
-    })
-  }
-
-  return signOutResponse as any
 }

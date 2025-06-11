@@ -12,7 +12,7 @@ import { Form, useLoaderData } from "react-router"
 export default function UserButton() {
   const loaderData = useLoaderData()
 
-  if (!loaderData.session?.user)
+  if (!loaderData?.session?.user)
     return (
       <Form method="post" action="/actions/sign-in">
         <Button type="submit">Sign in</Button>
