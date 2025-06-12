@@ -16,11 +16,7 @@ export default function Footer() {
         </CustomLink>
       </div>
       <div className="flex items-center justify-start gap-2">
-        <img
-          className="size-5"
-          src="https://authjs.dev/img/logo-sm.png"
-          alt="Auth.js Logo"
-        />
+        <img className="w-5" src="/logo-sm.png" alt="Auth.js Logo" />
         <CustomLink href="https://npmjs.org/package/@auth/react-router">
           {packageJSON.version}
         </CustomLink>

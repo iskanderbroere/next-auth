@@ -1,7 +1,7 @@
 {
   "name": "@auth/react-router",
   "description": "Authentication for react-router.",
-  "version": "0.3.0",
+  "version": "0.0.1",
   "private": true,
   "type": "module",
   "files": [

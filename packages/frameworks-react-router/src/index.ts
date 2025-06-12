@@ -15,13 +15,11 @@
  *
  * ## Usage
  *
- * ### Provider Configuration
- *
- * ## Signing in and signing out
- *
- * ## Managing the session
- *
- * ## Authorization
+ * ```ts title="app/lib/auth.server.ts"
+ * import NextAuth from "@auth/react-router"
+ * import GitHub from "@auth/react-router/providers/github"
+ * export const { auth, handlers } = ReactRouterAuth({ providers: [ GitHub ] })
+ * ```
  *
  * @module @auth/react-router
  */
@@ -61,20 +59,18 @@ export interface ReactRouterAuthResult {
    * After initializing ReactRouterAuth in `auth.ts`,
    * re-export these methods.
    *
-   * In `app/routes.ts`:
    * ```ts title="app/routes.ts"
    * export default [
    *  route("auth/*", "routes/auth.ts"),
    *] satisfies RouteConfig
    * ```
    *
-   * Then `app/routes/auth.ts`:
    * ```ts title="app/routes/auth.ts"
    * import { handlers } from "~/lib/auth.server"
-   * export const { action, loader } = handlers
+   * export const action = handlers.action
+   * export const loader = handlers.loader
    * ```
    *
-   * Then `app/lib/auth.server.ts`:
    * ```ts title="app/lib/auth.server.ts"
    * export const { handlers } = ReactRouterAuth({...})
    * ```
@@ -85,7 +81,7 @@ export interface ReactRouterAuthResult {
   }
   /**
    * A universal method to interact with Auth.js in your React Router app.
-   * After initializing NextAuth.js in `auth.ts`, use this method in route loaders.
+   * After initializing ReactRouterAuth.js in `auth.ts`, use this method in route loaders.
    *
    * @example
    * ```ts title="app/root.tsx"
